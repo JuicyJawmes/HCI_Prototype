@@ -1,6 +1,41 @@
 import 'package:flutter/material.dart' show AppBar, BottomAppBar, BuildContext, Column, CrossAxisAlignment, EdgeInsets, ElevatedButton, Icon, IconButton, Icons, InputDecoration, MainAxisAlignment, Navigator, OutlineInputBorder, Padding, Row, Scaffold, SizedBox, StatelessWidget, Text, TextField, Widget;
 
-class Rewardsloginscreen extends StatelessWidget {
+import 'package:flutter/material.dart';
+
+class Rewardsloginscreen extends StatefulWidget {
+  @override
+  _RewardsLoginScreenState createState() => _RewardsLoginScreenState();
+}
+
+class _RewardsLoginScreenState extends State<Rewardsloginscreen> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  bool _isLoggedIn = false;
+
+  void _login() {
+    String email = _emailController.text;
+    String password = _passwordController.text;
+
+    // Check the credentials
+    if (email == 'HCI@utdallas.edu' && password == 'HCI_Rocks!') {
+      setState(() {
+        _isLoggedIn = true;
+      });
+      // You might want to navigate the user to the next screen or perform some other actions here.
+    } else {
+      setState(() {
+        _isLoggedIn = false;
+      });
+      // Show an error message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Invalid email or password.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -10,7 +45,7 @@ class Rewardsloginscreen extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.home),
             onPressed: () {
-              Navigator.pushNamed (context, 'RewardsScreen'); // Replace with your home route name
+              Navigator.pushNamed(context, 'RewardsScreen'); // Replace with your home route name
             },
           ),
         ],
@@ -26,29 +61,33 @@ class Rewardsloginscreen extends StatelessWidget {
             ),
             SizedBox(height: 16.0),
             TextField(
+              controller: _emailController,
               decoration: InputDecoration(
-                labelText: 'email:',
+                labelText: 'Email:',
                 border: OutlineInputBorder(),
               ),
             ),
             SizedBox(height: 16.0),
             TextField(
+              controller: _passwordController,
               decoration: InputDecoration(
-                labelText: 'password:',
+                labelText: 'Password:',
                 border: OutlineInputBorder(),
               ),
               obscureText: true,
             ),
             SizedBox(height: 16.0),
             ElevatedButton(
-              onPressed: () {
+              onPressed: _login,
+              child: Text('Login'),
+            ),
+            // Changed the onPressed condition to check if _isLoggedIn is true
+            ElevatedButton(
+              onPressed: _isLoggedIn ? () {
                 Navigator.pushNamed(context, 'GiftCardScreen');
-// Logic for generating and emailing the gift card
-              },
+              } : null,
               child: Text('Generate and email Gift Card'),
             ),
-
-
           ],
         ),
       ),
@@ -71,7 +110,7 @@ class Rewardsloginscreen extends StatelessWidget {
             IconButton(
               icon: Icon(Icons.card_giftcard),
               onPressed: () {
-                Navigator.pushNamed(context, 'Rewards');
+                Navigator.pushNamed(context, 'GiftCardScreen');
               },
             ),
           ],
@@ -80,3 +119,5 @@ class Rewardsloginscreen extends StatelessWidget {
     );
   }
 }
+
+

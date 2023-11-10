@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-
 class Rewards extends StatefulWidget {
   @override
   _RewardsState createState() => _RewardsState();
 }
-
 class _RewardsState extends State<Rewards> {
   String _selectedSponsor = 'amazon';
   int _selectedPoints = 100;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +21,7 @@ class _RewardsState extends State<Rewards> {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(15.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -80,34 +77,62 @@ class _RewardsState extends State<Rewards> {
               },
               child: Text('Login to Collect Rewards'),
             ),
+            Spacer(),
+            Divider(thickness: 1.5), // begin bottom row of buttons
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.settings),
+                      onPressed: () {
+                        Navigator.pushNamed(context, 'ConfigScreen');
+                      },
+                      ),
+                      SizedBox(height: 6),
+                      Text(
+                        'Settings',
+                        style: TextStyle(fontSize: 10),
+                      ),
+                    ],
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                      IconButton(
+                        icon: Icon(Icons.compare),
+                      onPressed: () {},
+                      ),
+                      SizedBox(height: 6),
+                      Text(
+                        'Compare Usage',
+                        style: TextStyle(fontSize: 10),
+                      ),
+                  ],
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    IconButton(
+                        icon: Icon(Icons.card_giftcard),
+                        onPressed: () {},
+                      ),
+                      SizedBox(height: 6),
+                      Text(
+                        'Redeem',
+                        style: TextStyle(fontSize: 10),
+                      ),
+                  ],
+                ),
+              ],
+            ),
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Rewards'),
-          BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Config'),
-          BottomNavigationBarItem(icon: Icon(Icons.compare), label: 'TBD'),
-        ],
-        onTap: (int index) {
-          switch (index) {
-            case 0:
-              Navigator.pop(context,'RewardsScreen'); // Replace with your navigation or action logic
-
-              break;
-            case 1:
-              Navigator.pushNamed(context, 'ConfigScreen');              break;
-            case 2:
-              print("Friends tab pressed"); // Replace with your navigation or action logic
-              break;
-            default:
-              break;
-          }
-        },
-      ),
     );
   }
-
   Widget _buildRewardConversion(int points, String value) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,

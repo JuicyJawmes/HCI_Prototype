@@ -13,9 +13,8 @@ class _ConfigScreenState extends State<ConfigScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200], // Background color for the entire screen
       appBar: AppBar(
-        backgroundColor: Colors.teal, // Color for the app bar
+        backgroundColor: Colors.blue, // Color for the app bar
         title: Text('App Configurations'),
         actions: [
           IconButton(
@@ -42,7 +41,7 @@ class _ConfigScreenState extends State<ConfigScreen> {
                         _notificationsOn = value;
                       });
                     },
-                    activeColor: Colors.teal,
+                    activeColor: Colors.blue,
                   ),
                   SizedBox(height: 16.0),
                   Text('Notification Type:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
@@ -78,7 +77,7 @@ class _ConfigScreenState extends State<ConfigScreen> {
                   ),
                   SizedBox(height: 16.0),
                   ListTile(
-                    leading: Icon(Icons.apps, color: Colors.teal),
+                    leading: Icon(Icons.apps, color: Colors.blue),
                     title: Text('Choose your own essential + non-essential apps:', style: TextStyle(fontSize: 16)),
                     onTap: () {
                       Navigator.pushNamed(context, 'SelectAppsScreen');
@@ -91,19 +90,47 @@ class _ConfigScreenState extends State<ConfigScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                IconButton(
-                  icon: Icon(Icons.home, color: Colors.teal),
-                  onPressed: () {
-                    Navigator.pushNamed(context, 'RewardsScreen');
-                  },
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.settings),
+                      onPressed: () {},
+                      ),
+                      SizedBox(height: 6),
+                      Text(
+                        'Settings',
+                        style: TextStyle(fontSize: 10),
+                      ),
+                    ],
                 ),
-                IconButton(
-                  icon: Icon(Icons.compare, color: Colors.teal),
-                  onPressed: () {},
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                      IconButton(
+                        icon: Icon(Icons.compare),
+                      onPressed: () {},
+                      ),
+                      SizedBox(height: 6),
+                      Text(
+                        'Compare Usage',
+                        style: TextStyle(fontSize: 10),
+                      ),
+                  ],
                 ),
-                IconButton(
-                  icon: Icon(Icons.card_giftcard, color: Colors.teal),
-                  onPressed: () {Navigator.pushNamed(context, 'Rewards');},
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    IconButton(
+                        icon: Icon(Icons.card_giftcard),
+                        onPressed: () {Navigator.pushNamed(context, 'Rewards');},
+                      ),
+                      SizedBox(height: 6),
+                      Text(
+                        'Redeem',
+                        style: TextStyle(fontSize: 10),
+                      ),
+                  ],
                 ),
               ],
             ),

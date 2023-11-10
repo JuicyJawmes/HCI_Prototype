@@ -54,17 +54,19 @@ class Rewardsloginscreen extends StatelessWidget {
               children: <Widget>[
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      IconButton(
-                        icon: Icon(Icons.settings),
-                      onPressed: () {},
-                      ),
-                      SizedBox(height: 6),
-                      Text(
-                        'Settings',
-                        style: TextStyle(fontSize: 10),
-                      ),
-                    ],
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.settings),
+                      onPressed: () {
+                        Navigator.pushNamed(context, 'ConfigScreen');
+                      },
+                    ),
+                    SizedBox(height: 6),
+                    Text(
+                      'Settings',
+                      style: TextStyle(fontSize: 10),
+                    ),
+                  ],
                 ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,

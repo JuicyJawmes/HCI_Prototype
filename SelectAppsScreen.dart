@@ -45,12 +45,12 @@ class _SelectAppsScreenState extends State<SelectAppsScreen> {
             Navigator.pop(context);
           },
         ),
-        title: Text("Unwired Rewards"),
+        title: Text("Essential Apps"),
         centerTitle: true,
-        backgroundColor: Colors.pink[300],
+        backgroundColor: Colors.blue,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             Padding(
@@ -69,7 +69,7 @@ class _SelectAppsScreenState extends State<SelectAppsScreen> {
             Container(
               height: MediaQuery.of(context).size.height * 0.7,
               decoration: BoxDecoration(
-                color: Colors.pink[50],
+                color: Colors.blue[50],
                 borderRadius: BorderRadius.circular(10),
               ),
               child: ListView.builder(
@@ -78,7 +78,7 @@ class _SelectAppsScreenState extends State<SelectAppsScreen> {
                   return Card(
                     child: ListTile(
                       leading: Checkbox(
-                        activeColor: Colors.pink[300],
+                        activeColor: Colors.blue,
                         value: appSelected[apps[index]],
                         onChanged: (value) {
                           setState(() {
@@ -92,23 +92,54 @@ class _SelectAppsScreenState extends State<SelectAppsScreen> {
                 },
               ),
             ),
+            Spacer(),
             Divider(thickness: 1.5),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                IconButton(
-                  icon: Icon(Icons.home, color: Colors.teal),
-                  onPressed: () {
-                    Navigator.pushNamed(context, 'RewardsScreen'); // Replace with your navigation or action logic
-                        ;                  },
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.settings),
+                      onPressed: () {
+                        Navigator.pushNamed(context, 'ConfigScreen');
+                      },
+                      ),
+                      SizedBox(height: 6),
+                      Text(
+                        'Settings',
+                        style: TextStyle(fontSize: 10),
+                      ),
+                    ],
                 ),
-                IconButton(
-                  icon: Icon(Icons.compare, color: Colors.teal),
-                  onPressed: () {},
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                      IconButton(
+                        icon: Icon(Icons.compare),
+                      onPressed: () {},
+                      ),
+                      SizedBox(height: 6),
+                      Text(
+                        'Compare Usage',
+                        style: TextStyle(fontSize: 10),
+                      ),
+                  ],
                 ),
-                IconButton(
-                  icon: Icon(Icons.card_giftcard, color: Colors.teal),
-                  onPressed: () {},
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    IconButton(
+                        icon: Icon(Icons.card_giftcard),
+                        onPressed: () {Navigator.pushNamed(context, 'Rewards');},
+                      ),
+                      SizedBox(height: 6),
+                      Text(
+                        'Redeem',
+                        style: TextStyle(fontSize: 10),
+                      ),
+                  ],
                 ),
               ],
             ),

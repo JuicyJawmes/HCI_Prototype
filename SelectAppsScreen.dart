@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'AppPoints.dart';
+import 'PointsManager.dart';
 
 class SelectAppsScreen extends StatefulWidget {
   @override
@@ -9,6 +13,9 @@ class _SelectAppsScreenState extends State<SelectAppsScreen> {
   List<String> apps = [
     'WhatsApp',
     'Messenger',
+    'Outlook',
+    'Discord',
+    'Slack',
     'Facebook',
     'Instagram',
     'Twitter',
@@ -22,7 +29,6 @@ class _SelectAppsScreenState extends State<SelectAppsScreen> {
     'Handshake',
     'Blackboard',
     'Settings',
-    // Add more apps here as needed
   ];
 
   Map<String, bool> appSelected = {};
@@ -30,88 +36,77 @@ class _SelectAppsScreenState extends State<SelectAppsScreen> {
   @override
   void initState() {
     super.initState();
-    apps.forEach((app) {
-      appSelected[app] = false;
+    _loadSavedSelections();
+  }
+
+  Future<void> _loadSavedSelections() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      apps.forEach((app) {
+        appSelected[app] = prefs.getBool(app) ?? false;
+      });
     });
+  }
+
+  void onAppSelected(String app, bool isSelected) {
+    setState(() {
+      appSelected[app] = isSelected;
+    });
+    _saveSelection(app, isSelected);
+    final pointsManager = Provider.of<PointsManager>(context, listen: false);
+
+    if (appsPoints.containsKey(app)) {
+      final points = appsPoints[app]!;
+      if (isSelected) {
+        pointsManager.addPoints(points);
+      } else {
+        // Subtract points if an app is deselected
+        pointsManager.addPoints(-points);
+      }
+    }
+  }
+
+  Future<void> _saveSelection(String app, bool isSelected) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(app, isSelected);
+    // If you need to do any additional actions after saving, you can do it here.
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        title: Text("Unwired Rewards"),
-        centerTitle: true,
-        backgroundColor: Colors.pink[300],
+        // AppBar configuration
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: Text(
-                'GAIN or LOSE points depending on the app you use daily!',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ),
-            Text(
-              'Select Essential Apps',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 10.0),
-            Container(
-              height: MediaQuery.of(context).size.height * 0.7,
-              decoration: BoxDecoration(
-                color: Colors.pink[50],
-                borderRadius: BorderRadius.circular(10),
-              ),
+            // Your Text widgets and SizedBoxes...
+            Expanded(
               child: ListView.builder(
                 itemCount: apps.length,
                 itemBuilder: (context, index) {
+                  String app = apps[index];
                   return Card(
                     child: ListTile(
                       leading: Checkbox(
-                        activeColor: Colors.pink[300],
-                        value: appSelected[apps[index]],
+                        activeColor: Colors.blue,
+                        value: appSelected[app],
                         onChanged: (value) {
-                          setState(() {
-                            appSelected[apps[index]] = value!;
-                          });
+                          if (value != null) {
+                            onAppSelected(app, value);
+                          }
                         },
                       ),
-                      title: Text(apps[index]),
+                      title: Text(app),
                     ),
                   );
                 },
               ),
             ),
             Divider(thickness: 1.5),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                IconButton(
-                  icon: Icon(Icons.home, color: Colors.teal),
-                  onPressed: () {
-                    Navigator.pushNamed(context, 'RewardsScreen'); // Replace with your navigation or action logic
-                        ;                  },
-                ),
-                IconButton(
-                  icon: Icon(Icons.compare, color: Colors.teal),
-                  onPressed: () {},
-                ),
-                IconButton(
-                  icon: Icon(Icons.card_giftcard, color: Colors.teal),
-                  onPressed: () {},
-                ),
-              ],
-            ),
+            // Your bottom Row with IconButtons...
           ],
         ),
       ),

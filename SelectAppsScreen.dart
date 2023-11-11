@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart'; // Ensure this import is correct
 
 class SelectAppsScreen extends StatefulWidget {
   @override
@@ -27,12 +28,36 @@ class _SelectAppsScreenState extends State<SelectAppsScreen> {
 
   Map<String, bool> appSelected = {};
 
-  @override
+  
+ @override
   void initState() {
     super.initState();
-    apps.forEach((app) {
-      appSelected[app] = false;
+    _loadSavedSelections();
+  }
+
+  Future<void> _loadSavedSelections() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      apps.forEach((app) {
+        appSelected[app] = prefs.getBool(app) ?? false;
+      });
     });
+  }
+
+  void onAppSelected(String app, bool isSelected) {
+    setState(() {
+      appSelected[app] = isSelected;
+    });
+    _saveSelection(app, isSelected);
+  }
+
+  Future<void> _saveSelection(String app, bool isSelected) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool(app, isSelected);
+    } catch (e) {
+      // Handle any errors here
+    }
   }
 
   @override
@@ -80,10 +105,8 @@ class _SelectAppsScreenState extends State<SelectAppsScreen> {
                       leading: Checkbox(
                         activeColor: Colors.pink[300],
                         value: appSelected[apps[index]],
-                        onChanged: (value) {
-                          setState(() {
-                            appSelected[apps[index]] = value!;
-                          });
+                        onChanged: (value) {    onAppSelected(apps[index], value!);}
+
                         },
                       ),
                       title: Text(apps[index]),

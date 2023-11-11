@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart' show AppBar, BottomNavigationBar, BottomNavigationBarItem, BuildContext, Center, Column, ElevatedButton, Icon, IconButton, Icons, MainAxisAlignment, Navigator, Scaffold, SizedBox, StatelessWidget, Text, Widget;
+import 'package:flutter/material.dart';
 
 class GiftCardScreen extends StatelessWidget {
   @override
@@ -15,51 +15,86 @@ class GiftCardScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text("Unwired Rewards"),
-            Text("Gift card#: XXXXXXXX"),
-            Text("Gift Card Redeemed!"),
-            SizedBox(height: 20),
-            ElevatedButton(
-              child: Text("Return to Home"),
-              onPressed: () {
-                Navigator.pushNamed(context, 'RewardsScreen');
-              },
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            // This will take all available space that's not taken by the bottom buttons.
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Text("Unwired Rewards"),
+                  Text("Gift card#: XXXXXXXX"),
+                  Text("Gift Card Redeemed!"),
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                    child: Text("Continue Redeeming"),
+                    onPressed: () {
+                      Navigator.pushNamed(context, 'Rewards');
+                    },
+                  ),
+                ],
+              ),
             ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: "Settings",
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.compare),
-            label: "TBD",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.card_giftcard),
-            label: "Rewards",
-          ),
+          Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(children: [
+                Divider(thickness: 1.5),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.settings),
+                          onPressed: () {
+                            Navigator.pushNamed(context, 'ConfigScreen');
+                          },
+                        ),
+                        SizedBox(height: 6),
+                        Text(
+                          'Settings',
+                          style: TextStyle(fontSize: 10),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        IconButton(
+                          icon: Icon(Icons.compare),
+                          onPressed: () {},
+                        ),
+                        SizedBox(height: 6),
+                        Text(
+                          'Compare Usage',
+                          style: TextStyle(fontSize: 10),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        IconButton(
+                          icon: Icon(Icons.card_giftcard),
+                          onPressed: () {
+                            Navigator.pushNamed(context, 'Rewards');
+                          },
+                        ),
+                        SizedBox(height: 6),
+                        Text(
+                          'Redeem',
+                          style: TextStyle(fontSize: 10),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ])),
         ],
-        onTap: (index) {
-          switch (index) {
-            case 0:
-              Navigator.pushNamed(context, 'ConfigScreen');
-              break;
-            case 1:
-            // Add navigation logic for TBD screen when available
-              break;
-            case 2:
-              Navigator.pushNamed(context, 'Rewards');
-              break;
-          }
-        },
       ),
     );
   }

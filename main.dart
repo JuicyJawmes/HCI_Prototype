@@ -1,17 +1,35 @@
 import 'package:flutter/material.dart';
 import 'config_screen.dart';
-import 'SelectAppsScreen.dart';  // Importing the SelectAppsScreen.dart file
+import 'SelectAppsScreen.dart';
 import 'Rewards.dart';
 import 'Rewardsloginscreen.dart';
 import 'GiftCardScreen.dart';
 import 'FriendsList.dart';
+import 'PointsManager.dart';
+import 'package:provider/provider.dart';
+import 'AppPoints.dart';
 
-void main() => runApp(MyApp());
+//void main() => runApp(MyApp());
+void main() {
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => PointsManager(),
+      child: MyApp(),
+    ),
+  );
+}
+
+// void main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   await PointsManager.init();
+//   runApp(MyApp());
+// }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.blue),
       home: RewardsScreen(),  // Ensure this is imported or defined
       routes: {
@@ -26,8 +44,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-
 
 
 class RewardsScreen extends StatelessWidget {
@@ -142,4 +158,3 @@ class MenuButton extends StatelessWidget {
     );
   }
 }
-

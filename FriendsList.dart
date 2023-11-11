@@ -4,7 +4,6 @@ class FriendsList extends StatefulWidget {
   @override
   FriendsListState createState() => FriendsListState();
 }
-
 class FriendsListState extends State<FriendsList> {
   @override
   Widget build(BuildContext context) {
@@ -16,12 +15,14 @@ class FriendsListState extends State<FriendsList> {
         actions: [
           IconButton(
             icon: Icon(Icons.home, color: Colors.black),
-            onPressed: () { Navigator.pushNamed(context, 'RewardsScreen');},
-            // Handle the action for the home icon
+            onPressed: () {
+              Navigator.pushNamed(context, 'RewardsScreen');
+            }, // Handle the action for the home icon
+          ),
           IconButton(
             icon: Icon(Icons.arrow_back, color: Colors.black),
-            onPressed: () { Navigator.pop(context);},
-              ),
+            onPressed: () {
+              Navigator.pop(context);
             },
           ),
         ],
@@ -93,8 +94,8 @@ class FriendsListState extends State<FriendsList> {
           ),
           Divider(),
           // Footer icons, similar to app bar actions
-        ],
-      ),
-    );
-  }
+  ],
+  ),
+  );
+}
 }

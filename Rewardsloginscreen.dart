@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart' show AppBar, BottomAppBar, BuildContext, Column, CrossAxisAlignment, EdgeInsets, ElevatedButton, Icon, IconButton, Icons, InputDecoration, MainAxisAlignment, Navigator, OutlineInputBorder, Padding, Row, Scaffold, SizedBox, StatelessWidget, Text, TextField, Widget;
-
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'PointsManager.dart';
 
 class Rewardsloginscreen extends StatefulWidget {
+
+  final int selectedPoints; // Add this line if you pass selectedPoints through constructor
+  Rewardsloginscreen({Key? key, this.selectedPoints = 0}) : super(key: key); // Modify the constructor accordingly
+
   @override
   _RewardsLoginScreenState createState() => _RewardsLoginScreenState();
 }
@@ -35,6 +40,29 @@ class _RewardsLoginScreenState extends State<Rewardsloginscreen> {
       );
     }
   }
+  void _generateAndEmailGiftCard() async {
+    final pointsManager = Provider.of<PointsManager>(context, listen: false);
+    bool success = await pointsManager.redeemPoints(widget.selectedPoints); // Use the passed selectedPoints
+
+    if (success) {
+      // Proceed with generating and emailing the gift card
+      // TODO: Add your email gift card logic here
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Gift card emailed successfully.'),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Not enough points.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -119,5 +147,3 @@ class _RewardsLoginScreenState extends State<Rewardsloginscreen> {
     );
   }
 }
-
-

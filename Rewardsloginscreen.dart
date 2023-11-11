@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart' show AppBar, BottomAppBar, BuildContext, Column, CrossAxisAlignment, EdgeInsets, ElevatedButton, Icon, IconButton, Icons, InputDecoration, MainAxisAlignment, Navigator, OutlineInputBorder, Padding, Row, Scaffold, SizedBox, StatelessWidget, Text, TextField, Widget;
+import 'package:flutter/material.dart';
 
 class Rewardsloginscreen extends StatelessWidget {
   @override
@@ -45,34 +45,58 @@ class Rewardsloginscreen extends StatelessWidget {
                 Navigator.pushNamed(context, 'GiftCardScreen');
 // Logic for generating and emailing the gift card
               },
-              child: Text('Generate and email Gift Card'),
+              child: Text('Generate Gift Card!'),
             ),
-
-
-          ],
-        ),
-      ),
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            IconButton(
-              icon: Icon(Icons.settings),
-              onPressed: () {
-                Navigator.pushNamed(context, 'ConfigScreen');
-              },
-            ),
-            IconButton(
-              icon: Icon(Icons.compare),
-              onPressed: () {
-                // Logic for TBD
-              },
-            ),
-            IconButton(
-              icon: Icon(Icons.card_giftcard),
-              onPressed: () {
-                Navigator.pushNamed(context, 'Rewards');
-              },
+            Spacer(),
+            Divider(thickness: 1.5),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.settings),
+                      onPressed: () {
+                        Navigator.pushNamed(context, 'ConfigScreen');
+                      },
+                    ),
+                    SizedBox(height: 6),
+                    Text(
+                      'Settings',
+                      style: TextStyle(fontSize: 10),
+                    ),
+                  ],
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                      IconButton(
+                        icon: Icon(Icons.compare),
+                      onPressed: () {},
+                      ),
+                      SizedBox(height: 6),
+                      Text(
+                        'Compare Usage',
+                        style: TextStyle(fontSize: 10),
+                      ),
+                  ],
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    IconButton(
+                        icon: Icon(Icons.card_giftcard),
+                        onPressed: () {Navigator.pushNamed(context, 'Rewards');},
+                      ),
+                      SizedBox(height: 6),
+                      Text(
+                        'Redeem',
+                        style: TextStyle(fontSize: 10),
+                      ),
+                  ],
+                ),
+              ],
             ),
           ],
         ),

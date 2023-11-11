@@ -1,0 +1,27 @@
+name: attempt2
+description: A new Flutter project.
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: '>=3.1.5 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  provider: ^6.0.1
+  shared_preferences: ^2.0.15 # Allows updates within the "2.x.x" range without breaking changes
+  cupertino_icons: ^1.0.2      # Allows updates within the "1.x.x" range without breaking changes
+  flutter_local_notifications: ^16.1.0  # Update the version to allow newer versions
+  dropdown_search: ^5.0.6              # Allows updates within the "1.x.x" range without breaking changes
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  integration_test:
+    sdk: flutter
+  build_runner: ^2.1.10  # Allows updates within the "2.x.x" range without breaking changes
+
+flutter:
+  uses-material-design: true
+

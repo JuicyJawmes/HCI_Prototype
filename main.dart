@@ -8,8 +8,9 @@ import 'FriendsList.dart';
 import 'PointsManager.dart';
 import 'package:provider/provider.dart';
 import 'AppPoints.dart';
+import 'AppLogin.dart';
 
-//void main() => runApp(MyApp());
+
 void main() {
   runApp(
     ChangeNotifierProvider(
@@ -19,11 +20,6 @@ void main() {
   );
 }
 
-// void main() async {
-//   WidgetsFlutterBinding.ensureInitialized();
-//   await PointsManager.init();
-//   runApp(MyApp());
-// }
 
 class MyApp extends StatelessWidget {
   @override
@@ -33,12 +29,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(primarySwatch: Colors.blue),
       home: RewardsScreen(),  // Ensure this is imported or defined
       routes: {
+        //'AppLogin': (context ) => AppLogin(),
         'ConfigScreen': (context) => ConfigScreen(),
         'SelectAppsScreen': (context) => SelectAppsScreen(),
         'Rewards': (context) => Rewards(),
         'RewardsScreen':(context )=> RewardsScreen(),
-        'Rewardsloginscreen': (context )=> Rewardsloginscreen(),
-        'GiftCardScreen': (context) => GiftCardScreen(),
+        'Rewardsloginscreen': (context )=> Rewardsloginscreen(selectedSponsor: '',),
+        'GiftCardScreen': (context) => GiftCardScreen(sponsorName: '',),
         'FriendsList': (context) => FriendsList(),
       },
     );
@@ -49,67 +46,57 @@ class MyApp extends StatelessWidget {
 class RewardsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final pointsManager = Provider.of<PointsManager>(context);
+    // Get the top 3 apps from the PointsManager
+    final topApps = pointsManager.topApps;
+    print('Top apps: $topApps');
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Unwired Rewards', style: TextStyle(fontSize: 25)), // 1.25x of 20
+        title: Text('Unwired Rewards', style: TextStyle(fontSize: 25)),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20.0), // 1.25x of 16
+        padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Hello, Mark!', style: TextStyle(fontSize: 37.5)), // 1.25x of 30
-            SizedBox(height: 50), // 1.25x of 40
+            Text('Hello, Mark!', style: TextStyle(fontSize: 37.5)),
+            SizedBox(height: 30),
+            Center(
+              child: Text('Weekly Usage', style: TextStyle(fontSize: 22.5, fontWeight: FontWeight.bold)),
+            ),
+            SizedBox(height: 20),
+            Text('Top 3 Apps', style: TextStyle(fontSize: 20, decoration: TextDecoration.underline)),
+          for (var entry in topApps) // Iterate over the topApps list
+        Padding(
+    padding: const EdgeInsets.symmetric(vertical: 4.0),
+    child: Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+    Text(entry.key, style: TextStyle(fontSize: 18)),
+    Text('${entry.value} Hrs', style: TextStyle(fontSize: 18, color: appsDeductPoints.containsKey(entry.key) ? Colors.red : Colors.green)),
+                  ],
+                ),
+        ),
+            SizedBox(height: 30),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Column(
                   children: [
-                    Container(
-                      height: 100,
-                      width: 40,
-                      color: Colors.red,
-                    ),
-                    Text('10/04', style: TextStyle(fontSize: 22.5)), // 1.25x of 18
-                    SizedBox(height: 25), // 1.25x of 20
-                    Text('Phone Usage', style: TextStyle(fontSize: 20)), // 1.25x of 16
+                    Text('Points Earned ', style: TextStyle(fontSize: 20)),
+                    Text('${pointsManager.pointsEarned}', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.green)),
                   ],
                 ),
                 Column(
                   children: [
-                    Container(
-                      height: 100,
-                      width: 40,
-                      color: Colors.green,
-                    ),
-                    Text('10/05', style: TextStyle(fontSize: 22.5)), // 1.25x of 18
-                  ],
-                ),
-                Column(
-                  children: [
-                    Container(
-                      height: 120,
-                      width: 40,
-                      color: Colors.red,
-                    ),
-                    Text('10/04', style: TextStyle(fontSize: 22.5)), // 1.25x of 18
-                    SizedBox(height: 25), // 1.25x of 20
-                    Text('Points Earned', style: TextStyle(fontSize: 20)), // 1.25x of 16
-                  ],
-                ),
-                Column(
-                  children: [
-                    Container(
-                      height: 120,
-                      width: 40,
-                      color: Colors.green,
-                    ),
-                    Text('10/05', style: TextStyle(fontSize: 22.5)), // 1.25x of 18
+                    Text('Points Lost', style: TextStyle(fontSize: 18)),
+                    Text('${pointsManager.pointsLost}', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.red)),
                   ],
                 ),
               ],
             ),
-            SizedBox(height: 50), // 1.25x of 40
+            SizedBox(height: 50),
             Expanded(
               child: ListView(
                 padding: EdgeInsets.symmetric(vertical: 12.5), // Adding vertical padding of 12.5 for each item
@@ -121,7 +108,7 @@ class RewardsScreen extends StatelessWidget {
                     },
                   ),
                   MenuButton(
-                    icon: Icons.compare,
+                    icon: Icons.people,
                     text: 'Compare Usage',
                     onPressed: () { Navigator.pushNamed(context, 'FriendsList');
                     },

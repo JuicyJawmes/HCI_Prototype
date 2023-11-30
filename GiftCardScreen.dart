@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
 class GiftCardScreen extends StatelessWidget {
+
+  final String sponsorName;
+  GiftCardScreen({Key? key, required this.sponsorName}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,11 +29,13 @@ class GiftCardScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Text("Unwired Rewards"),
+                  Text("Sponsor: $sponsorName"), // Add this line to display the sponsor
+                  Text("Points Converted:       "),
                   Text("Gift card#: XXXXXXXX"),
                   Text("Gift Card Redeemed!"),
                   SizedBox(height: 20),
                   ElevatedButton(
-                    child: Text("Continue Redeeming"),
+                    child: Text("Redeem Again"),
                     onPressed: () {
                       Navigator.pushNamed(context, 'Rewards');
                     },
@@ -65,8 +71,8 @@ class GiftCardScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: <Widget>[
                         IconButton(
-                          icon: Icon(Icons.compare),
-                          onPressed: () {},
+                          icon: Icon(Icons.people),
+                          onPressed: () {Navigator.pushNamed(context, 'FriendsList');},
                         ),
                         SizedBox(height: 6),
                         Text(

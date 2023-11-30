@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'PointsManager.dart';
+import 'Rewardsloginscreen.dart';
 
 class Rewards extends StatefulWidget {
   @override
@@ -10,10 +11,10 @@ class _RewardsState extends State<Rewards> {
   String _selectedSponsor = 'Amazon';
   int _selectedPoints = 100;
 
-
   @override
   Widget build(BuildContext context) {
     final pointsManager = Provider.of<PointsManager>(context, listen: false);
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Redeem Rewards"),
@@ -21,25 +22,25 @@ class _RewardsState extends State<Rewards> {
           IconButton(
             icon: Icon(Icons.home),
             onPressed: () {
-              Navigator.pop(context); // Navigate back
+              Navigator.pushNamed(context, 'RewardsScreen');; // Navigate back
             },
           ),
         ],
       ),
-    body: Padding(
-    padding: const EdgeInsets.all(16.0),
-    child: Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-    Text('Unwired Rewards', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-    SizedBox(height: 20),
-    Consumer<PointsManager>(
-    builder: (context, pointsManager, child) => Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-    Text('Current Balance:', style: TextStyle(fontSize: 18)),
-    Text('${pointsManager.currentPoints} pts', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-            ],
+      body: Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+      Text('Unwired Rewards', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+      SizedBox(height: 20),
+      Consumer<PointsManager>(
+      builder: (context, pointsManager, child) => Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+      Text('Current Balance:', style: TextStyle(fontSize: 18)),
+      Text('${pointsManager.currentPoints} pts', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+              ],
     ),
     ),
             SizedBox(height: 20),
@@ -89,7 +90,12 @@ class _RewardsState extends State<Rewards> {
                 // Check if the user can redeem points and get the success status
                 bool canRedeem = await Provider.of<PointsManager>(context, listen: false).canRedeemPoints(_selectedPoints);
                 if (canRedeem) {
-                  Navigator.pushNamed(context, 'Rewardsloginscreen'); // Navigate to the next screen if successful
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Rewardsloginscreen(selectedPoints: _selectedPoints),
+                    ),
+                  );
                 } else {
                   // If not enough points, show a snackbar or some alert to the user
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -127,8 +133,8 @@ class _RewardsState extends State<Rewards> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
                     IconButton(
-                      icon: Icon(Icons.compare),
-                      onPressed: () {},
+                      icon: Icon(Icons.people),
+                      onPressed: () {Navigator.pushNamed(context, 'FriendsList');},
                     ),
                     SizedBox(height: 6),
                     Text(

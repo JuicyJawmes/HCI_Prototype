@@ -40,6 +40,7 @@ class _RewardsState extends State<Rewards> {
       children: [
       Text('Current Balance:', style: TextStyle(fontSize: 18)),
       Text('${pointsManager.currentPoints} pts', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+        //Text("Selected Sponsor: $_selectedSponsor"),
               ],
     ),
     ),
@@ -93,7 +94,7 @@ class _RewardsState extends State<Rewards> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => Rewardsloginscreen(selectedPoints: _selectedPoints),
+                      builder: (context) => Rewardsloginscreen(selectedPoints: _selectedPoints, selectedSponsor: _selectedSponsor),
                     ),
                   );
                 } else {

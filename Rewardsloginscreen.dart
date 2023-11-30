@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart' show AppBar, BottomAppBar, BuildContext, Column, CrossAxisAlignment, EdgeInsets, ElevatedButton, Icon, IconButton, Icons, InputDecoration, MainAxisAlignment, Navigator, OutlineInputBorder, Padding, Row, Scaffold, SizedBox, StatelessWidget, Text, TextField, Widget;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'GiftCardScreen.dart';
 import 'PointsManager.dart';
+import 'Rewards.dart';
 
 class Rewardsloginscreen extends StatefulWidget {
 
+  final String selectedSponsor;
   final int selectedPoints; // Add this line if you pass selectedPoints through constructor
-  Rewardsloginscreen({Key? key, this.selectedPoints = 0}) : super(key: key); // Modify the constructor accordingly
+  Rewardsloginscreen({Key? key, this.selectedPoints = 0, required this.selectedSponsor}) : super(key: key); // Modify the constructor accordingly
 
   @override
   _RewardsLoginScreenState createState() => _RewardsLoginScreenState();
@@ -25,6 +28,7 @@ class _RewardsLoginScreenState extends State<Rewardsloginscreen> {
     if (email == 'HCI@utdallas.edu' && password == 'HCI_Rocks!') {
       setState(() {
         _isLoggedIn = true;
+
       });
       // You might want to navigate the user to the next screen or perform some other actions here.
     } else {
@@ -40,29 +44,6 @@ class _RewardsLoginScreenState extends State<Rewardsloginscreen> {
       );
     }
   }
-  void _generateAndEmailGiftCard() async {
-    final pointsManager = Provider.of<PointsManager>(context, listen: false);
-    bool success = await pointsManager.redeemPoints(widget.selectedPoints); // Use the passed selectedPoints
-
-    if (success) {
-      // Proceed with generating and emailing the gift card
-      // TODO: Add your email gift card logic here
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Gift card emailed successfully.'),
-          backgroundColor: Colors.green,
-        ),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Not enough points.'),
-          backgroundColor: Colors.red,
-        ),
-      );
-    }
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -110,11 +91,24 @@ class _RewardsLoginScreenState extends State<Rewardsloginscreen> {
               child: Text('Login'),
             ),
             // Changed the onPressed condition to check if _isLoggedIn is true
+            SizedBox(height: 100.0),
             ElevatedButton(
-              onPressed: _isLoggedIn ? () {
-                Navigator.pushNamed(context, 'GiftCardScreen');
-              } : null,
-              child: Text('Generate and email Gift Card'),
+              onPressed: _isLoggedIn
+                  ? () async {
+                // Call redeemPoints from PointsManager
+                await Provider.of<PointsManager>(context, listen: false).redeemPoints(widget.selectedPoints);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => GiftCardScreen(sponsorName: widget.selectedSponsor,),
+                  ),
+                );
+
+                  // If redeeming points was successful, do something, like navigate
+                  //Navigator.pushNamed(context, 'GiftCardScreen');
+              }
+                  : null, // Button is disabled when _isLoggedIn is false
+              child: Text('Generate Gift Card'),
             ),
           ],
         ),
@@ -130,15 +124,14 @@ class _RewardsLoginScreenState extends State<Rewardsloginscreen> {
               },
             ),
             IconButton(
-              icon: Icon(Icons.compare),
-              onPressed: () {
-                // Logic for TBD
+              icon: Icon(Icons.people),
+              onPressed: () {Navigator.pushNamed(context, 'FriendsList');
               },
             ),
             IconButton(
               icon: Icon(Icons.card_giftcard),
               onPressed: () {
-                Navigator.pushNamed(context, 'GiftCardScreen');
+                Navigator.pushNamed(context, 'Rewards');
               },
             ),
           ],

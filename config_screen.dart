@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ConfigScreen extends StatefulWidget {
   @override
@@ -10,6 +11,38 @@ class _ConfigScreenState extends State<ConfigScreen> {
   String _notificationType = 'Vibration';
   String _notificationFrequency = '10 minutes';
 
+
+  void _showSnackBar(String message, Color backgroundColor) {
+    final snackBar = SnackBar(
+      content: Text(message),
+      backgroundColor: backgroundColor,
+      duration: Duration(seconds: 1),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPreferences();
+  }
+
+  _loadPreferences() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _notificationsOn = prefs.getBool('notificationsOn') ?? true;
+      _notificationType = prefs.getString('notificationType') ?? 'Vibration';
+      _notificationFrequency = prefs.getString('notificationFrequency') ?? '10 minutes';
+    });
+  }
+
+  _savePreferences() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setBool('notificationsOn', _notificationsOn);
+    prefs.setString('notificationType', _notificationType);
+    prefs.setString('notificationFrequency', _notificationFrequency);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +53,7 @@ class _ConfigScreenState extends State<ConfigScreen> {
           IconButton(
             icon: Icon(Icons.home, color: Colors.white),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pushNamed(context, 'RewardsScreen');
             },
           ),
         ],
@@ -39,6 +72,11 @@ class _ConfigScreenState extends State<ConfigScreen> {
                     onChanged: (bool value) {
                       setState(() {
                         _notificationsOn = value;
+                        _savePreferences();
+                        _showSnackBar(
+                        _notificationsOn ? "Notifications turned on" : "Notifications turned off",
+                        _notificationsOn ? Colors.green : Colors.red, // Green when on, red when off
+                        );
                       });
                     },
                     activeColor: Colors.blue,
@@ -47,7 +85,7 @@ class _ConfigScreenState extends State<ConfigScreen> {
                   Text('Notification Type:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                   DropdownButton<String>(
                     value: _notificationType,
-                    items: ['Vibration', 'Ring'].map((String value) {
+                    items: ['Vibration', 'Ring','Silent',].map((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
                         child: Text(value),
@@ -56,6 +94,8 @@ class _ConfigScreenState extends State<ConfigScreen> {
                     onChanged: (value) {
                       setState(() {
                         _notificationType = value!;
+                        _savePreferences();
+                        _showSnackBar("Notification type set to $_notificationType", Colors.green); // Green snackbar
                       });
                     },
                   ),
@@ -63,7 +103,7 @@ class _ConfigScreenState extends State<ConfigScreen> {
                   Text('Notification Frequency:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                   DropdownButton<String>(
                     value: _notificationFrequency,
-                    items: ['10 minutes', '15 minutes', '30 minutes', '1 hr'].map((String value) {
+                    items: ['10 minutes', '15 minutes', '30 minutes', '1 hour'].map((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
                         child: Text(value),
@@ -72,13 +112,15 @@ class _ConfigScreenState extends State<ConfigScreen> {
                     onChanged: (value) {
                       setState(() {
                         _notificationFrequency = value!;
+                        _savePreferences();
+                        _showSnackBar("Notification frequency set to $_notificationFrequency", Colors.green); // Green snackbar
                       });
                     },
                   ),
                   SizedBox(height: 16.0),
                   ListTile(
                     leading: Icon(Icons.apps, color: Colors.blue),
-                    title: Text('Choose your own essential + non-essential apps:', style: TextStyle(fontSize: 16)),
+                    title: Text('Select Applications for Monitoring', style: TextStyle(fontSize: 16)),
                     onTap: () {
                       Navigator.pushNamed(context, 'SelectAppsScreen');
                     },
@@ -108,8 +150,8 @@ class _ConfigScreenState extends State<ConfigScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
                     IconButton(
-                      icon: Icon(Icons.compare),
-                      onPressed: () {},
+                      icon: Icon(Icons.people),
+                      onPressed: () {Navigator.pushNamed(context, 'FriendsList');},
                     ),
                     SizedBox(height: 6),
                     Text(

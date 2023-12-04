@@ -128,6 +128,20 @@ class _ConfigScreenState extends State<ConfigScreen> {
                 ],
               ),
             ),
+            Center(
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.blue,
+                  onPrimary: Colors.white,
+                ),
+                onPressed: () {
+                  // Add your logout logic here if needed
+                  Navigator.pushReplacementNamed(context, 'LoginScreen'); // Navigate to the login screen
+                },
+                child: Text('Sign out'),
+              ),
+            ),
+            SizedBox(height: 20), // Add some spacing
             Divider(thickness: 1.5),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,

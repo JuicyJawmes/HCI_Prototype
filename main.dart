@@ -27,15 +27,16 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: RewardsScreen(),  // Ensure this is imported or defined
+      home: LoginScreen(),  // Ensure this is imported or defined
       routes: {
-        //'AppLogin': (context ) => AppLogin(),
+        'LoginScreen':(context ) => LoginScreen(),
+        'RewardsScreen':(context )=> RewardsScreen(),
         'ConfigScreen': (context) => ConfigScreen(),
         'SelectAppsScreen': (context) => SelectAppsScreen(),
         'Rewards': (context) => Rewards(),
         'RewardsScreen':(context )=> RewardsScreen(),
         'Rewardsloginscreen': (context )=> Rewardsloginscreen(selectedSponsor: '',),
-        'GiftCardScreen': (context) => GiftCardScreen(sponsorName: '',),
+        'GiftCardScreen': (context) => GiftCardScreen(sponsorName: '', selectedPoints: 0,),
         'FriendsList': (context) => FriendsList(),
       },
     );

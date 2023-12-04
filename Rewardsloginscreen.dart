@@ -93,22 +93,38 @@ class _RewardsLoginScreenState extends State<Rewardsloginscreen> {
             // Changed the onPressed condition to check if _isLoggedIn is true
             SizedBox(height: 100.0),
             ElevatedButton(
-              onPressed: _isLoggedIn
-                  ? () async {
-                // Call redeemPoints from PointsManager
-                await Provider.of<PointsManager>(context, listen: false).redeemPoints(widget.selectedPoints);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => GiftCardScreen(sponsorName: widget.selectedSponsor,),
-                  ),
-                );
-
-                  // If redeeming points was successful, do something, like navigate
-                  //Navigator.pushNamed(context, 'GiftCardScreen');
+              onPressed: _isLoggedIn ? () async {
+                bool canRedeem = await Provider.of<PointsManager>(context, listen: false).canRedeemPoints(widget.selectedPoints);
+                if (canRedeem) {
+                  Provider.of<PointsManager>(context, listen: false).redeemPoints(widget.selectedPoints);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => GiftCardScreen(sponsorName: widget.selectedSponsor, selectedPoints: widget.selectedPoints),
+                    ),
+                  );
+                } else {
+                  // existing code...
+                }
               }
-                  : null, // Button is disabled when _isLoggedIn is false
+              :null,
               child: Text('Generate Gift Card'),
+              // onPressed: _isLoggedIn
+              //     ? () async {
+              //   // Call redeemPoints from PointsManager
+              //   await Provider.of<PointsManager>(context, listen: false).redeemPoints(widget.selectedPoints);
+              //   Navigator.push(
+              //     context,
+              //     MaterialPageRoute(
+              //       builder: (context) => GiftCardScreen(sponsorName: widget.selectedSponsor,),
+              //     ),
+              //   );
+              //
+              //     // If redeeming points was successful, do something, like navigate
+              //     //Navigator.pushNamed(context, 'GiftCardScreen');
+              // }
+              //     : null, // Button is disabled when _isLoggedIn is false
+              // child: Text('Generate Gift Card'),
             ),
           ],
         ),

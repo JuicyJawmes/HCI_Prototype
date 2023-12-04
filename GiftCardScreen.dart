@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 class GiftCardScreen extends StatelessWidget {
 
   final String sponsorName;
-  GiftCardScreen({Key? key, required this.sponsorName}) : super(key: key);
+  final int selectedPoints;
+  //GiftCardScreen({Key? key, required this.sponsorName}) : super(key: key);
+  GiftCardScreen({Key? key, required this.sponsorName, required this.selectedPoints}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +32,7 @@ class GiftCardScreen extends StatelessWidget {
                 children: <Widget>[
                   Text("Unwired Rewards"),
                   Text("Sponsor: $sponsorName"), // Add this line to display the sponsor
-                  Text("Points Converted:       "),
+                  Text("Points Converted: $selectedPoints"),
                   Text("Gift card#: XXXXXXXX"),
                   Text("Gift Card Redeemed!"),
                   SizedBox(height: 20),

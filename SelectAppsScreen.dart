@@ -13,6 +13,9 @@ class _SelectAppsScreenState extends State<SelectAppsScreen> {
   List<String> apps = [
     'WhatsApp',
     'Messenger',
+    'Netflix',
+    'Youtube',
+    'DisneyPlus',
     'Outlook',
     'Discord',
     'Slack',
@@ -49,22 +52,18 @@ class _SelectAppsScreenState extends State<SelectAppsScreen> {
   }
 
   void onAppSelected(String app, bool isSelected) {
+    // Immediately update the UI to reflect the selection change
     setState(() {
       appSelected[app] = isSelected;
     });
-    _saveSelection(app, isSelected);
-    final pointsManager = Provider.of<PointsManager>(context, listen: false);
 
-    if (appsPoints.containsKey(app)) {
-      final points = appsPoints[app]!;
-      if (isSelected) {
-        pointsManager.addPoints(points);
-      } else {
-        // Subtract points if an app is deselected
-        pointsManager.addPoints(-points);
-      }
-    }
+    // Handle the points addition or deduction in PointsManager
+    Provider.of<PointsManager>(context, listen: false).updateAppSelection(app, isSelected);
+
+    // Save the updated selection to shared preferences
+    _saveSelection(app, isSelected);
   }
+
 
   Future<void> _saveSelection(String app, bool isSelected) async {
     final prefs = await SharedPreferences.getInstance();
@@ -93,9 +92,9 @@ class _SelectAppsScreenState extends State<SelectAppsScreen> {
                       leading: Checkbox(
                         activeColor: Colors.blue,
                         value: appSelected[app],
-                        onChanged: (value) {
-                          if (value != null) {
-                            onAppSelected(app, value);
+                        onChanged: (bool? newvalue) {
+                          if (newvalue != null) {
+                            onAppSelected(app, newvalue);
                           }
                         },
                       ),
